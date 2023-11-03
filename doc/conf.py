@@ -65,7 +65,7 @@ html_theme_options = {
 
     "navbar_start": ["navbar-logo", "version-switcher"],
 
-    # "show_version_warning_banner": True,
+    "show_version_warning_banner": True,
 }
 # html_theme_options = {
 #     "github_button": False,
