@@ -4,9 +4,9 @@
         "url": "https://sef43.github.io/openmm-ml-docs-test/dev"
     },
     {
-        "version": "ref/tags/1.1.1",
+        "version": "refs/tags/1.1.1",
         "name": "1.1.1 (latest)",
-        "url": "https://sef43.github.io/openmm-ml-docs-test/ref/tags/1.1.1",
+        "url": "https://sef43.github.io/openmm-ml-docs-test/refs/tags/1.1.1",
         "preferred": true
     }
 ]
