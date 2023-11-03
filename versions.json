@@ -2,7 +2,7 @@
     {
         "version": "dev",
         "url": "https://sef43.github.io/openmm-ml-docs-test/dev"
-    }
+    },
     {
         "version": "ref/tags/1.1.1",
         "name": "1.1.1 (latest)",
