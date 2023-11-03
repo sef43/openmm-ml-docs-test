@@ -5,7 +5,7 @@ import sys
 
 sys.path.append(os.path.abspath('../'))
 
-release = os.getenv("PAGES_DEPLOY_PATH","dev")
+release = os.getenv("PAGES_DEPLOY_PATH","dev").lstrip("refs/tags/")
 
 print(release)
 
