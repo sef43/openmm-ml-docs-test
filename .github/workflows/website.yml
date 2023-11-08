@@ -5,10 +5,6 @@ on:
   push:
     branches:
       - main
-  # pull_request:
-  #   branches:
-  #     - main
-  #   types: [opened, edited, synchronize, reopened]
   release:
     types: [published]
 
@@ -44,22 +40,15 @@ jobs:
           ls
           conda list
 
-      - name: set dev path
+      - name: Install openmm-ml
         run: |
-          echo "PAGES_DEPLOY_PATH=dev" >> $GITHUB_ENV
-        if: github.event_name == 'push'
-      # - name: set PR path
-      #   run: |
-      #     echo "PAGES_DEPLOY_PATH=PR${{ github.event.number }}" >> $GITHUB_ENV
-      #   if: github.event_name == 'pull_request'
-      - name: set release path
-        run: |
-         echo "PAGES_DEPLOY_PATH=${GITHUB_REF}" >> $GITHUB_ENV
-        if: github.event_name == 'release'
+          pip install .
+
       - name: Build Sphinx documentation
         run: |
           cd doc
           make html
+
       - name: Checkout gh-pages
         if: success()
         uses: actions/checkout@v2
@@ -70,28 +59,19 @@ jobs:
 
       - name: Prepare development deployment
         if: success() && github.event_name == 'push'
-        env:
-          PR: ${{ github.event.number }}
         run: |
           rm -rf deploy/dev
           mv doc/build/html deploy/dev
-      # - name: Prepare PR deployment
-      #   if: success() && github.event_name == 'pull_request'
-      #   env:
-      #     PR: ${{ github.event.number }}
-      #   run: |
-      #     rm -rf deploy/PR${PR}
-      #     mv build/html deploy/PR${PR}
+
       - name: Prepare release deployment
         if: success() && github.event_name == 'release'
-        env:
-          PR: ${{ github.event.number }}
         run: |
-          rm -rf deploy/${GITHUB_REF}
-          mkdir -p deploy/${GITHUB_REF}
-          mv -T doc/build/html deploy/${GITHUB_REF}
+          rm -rf deploy/${{  github.ref_name }}
+          mkdir -p deploy/${{  github.ref_name }}
+          mv -T doc/build/html deploy/${{  github.ref_name }}
           rm -rf deploy/latest
-          ln -s ${GITHUB_REF} deploy/latest
+          ln -s ${{  github.ref_name }} deploy/latest
+
       - name: Deploy to GitHub Pages
         if: success()
         uses: crazy-max/ghaction-github-pages@v2
@@ -105,23 +85,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      # - name: Find Comment
-      #   if: success() && github.event_name == 'pull_request'
-      #   uses: peter-evans/find-comment@v1
-      #   id: fc
-      #   with:
-      #     issue-number: ${{ github.event.pull_request.number }}
-      #     comment-author: 'github-actions[bot]'
-      #     body-includes: Example docs for this PR
-
-      # - name: Create or update comment
-      #   if: success() && github.event_name == 'pull_request'
-      #   uses: peter-evans/create-or-update-comment@v1
-      #   env:
-      #     PR: ${{ github.event.number }}
-      #   with:
-      #     comment-id: ${{ steps.fc.outputs.comment-id }}
-      #     issue-number: ${{ github.event.pull_request.number }}
-      #     body: |
-      #       Example docs for this PR [rendered here](https://openmm.github.io/openmm-cookbook/PR${{ github.event.number }})
-      #     edit-mode: replace
