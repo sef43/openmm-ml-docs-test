@@ -88,7 +88,7 @@ html_theme_options = {
 # settings for version switcher and warning
 html_theme_options["navbar_start"]=["navbar-logo", "version-switcher"]
 html_theme_options["switcher"]= {
-        "json_url": "https://sef43.github.io/openmm-ml-docs-test/dev/_static/verions.json",
+        "json_url": "https://sef43.github.io/openmm-ml-docs-test/dev/_static/versions.json",
         "version_match": version_match,
     }
 html_theme_options["show_version_warning_banner"]=True
